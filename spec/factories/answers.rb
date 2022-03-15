@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 FactoryBot.define do
   factory :answer do
-    title { "MyString" }
+    title { 'MyString' }
     correct { false }
   end
 end
