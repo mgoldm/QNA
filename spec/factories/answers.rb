@@ -3,6 +3,11 @@
 FactoryBot.define do
   factory :answer do
     title { 'MyString' }
-    correct { false }
+    correct { true }
+
+    trait :invalid do
+      title { nil }
+      correct { nil }
+    end
   end
 end
