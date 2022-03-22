@@ -18,7 +18,6 @@ feature 'User can create question', "
     end
 
     scenario 'Authenticated user asks a question' do
-
       fill_in 'Title', with: 'Test question'
       fill_in 'Body', with: 'text text text'
       click_on 'Ask'
@@ -33,14 +32,11 @@ feature 'User can create question', "
 
       expect(page).to have_content "Title can't be blank"
     end
-
   end
   scenario 'Unauthenticated user tries to ask question' do
-
     visit questions_path
     click_on 'Ask question'
 
     expect(page).to have_content 'You need to sign in or sign up before continuing.'
-
   end
 end
