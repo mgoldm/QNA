@@ -1,6 +1,9 @@
 # frozen_string_literal: true
 
 class AnswersController < ApplicationController
+  before_action :load_question, only: %i[new create]
+  before_action :authenticate_user!, except: %i[show]
+
   def show; end
 
   def new; end
@@ -8,11 +11,11 @@ class AnswersController < ApplicationController
   def edit; end
 
   def create
-    @question = Question.find(params[:question_id])
     @answer = @question.answers.new(answer_params)
+    @answer.user = current_user
 
     if @answer.save
-      redirect_to @answer
+      redirect_to @answer, notice: 'Your answer successfully created'
     else
       render :new
     end
@@ -27,11 +30,19 @@ class AnswersController < ApplicationController
   end
 
   def destroy
-    answer.destroy
-    redirect_to question_path(answer.question)
+    if current_user.answers.include?(answer)
+      answer.destroy
+      redirect_to question_path(answer.question), notice: 'Answer was deleted successful'
+    else
+      redirect_to answer_path(answer), alert: "You don't have permission"
+    end
   end
 
   private
+
+  def load_question
+    @question = Question.find(params[:question_id])
+  end
 
   def answer
     @answer ||= params[:id] ? Answer.find(params[:id]) : Answer.new
