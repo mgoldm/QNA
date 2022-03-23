@@ -34,7 +34,7 @@ class QuestionsController < ApplicationController
   def destroy
     if current_user.questions.include?(question)
       question.destroy
-      redirect_to questions_path, notice: "Question was deleted successful"
+      redirect_to questions_path, notice: 'Question was deleted successful'
     else
       redirect_to question_path(question), alert: "You don't have permission"
     end
