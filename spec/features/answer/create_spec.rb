@@ -37,7 +37,9 @@ feature 'User can create answer', "
   end
 
   describe 'Authenticated user' do
-    given(:another_user) { create(:user, email: '12345678@mail.ru', password: '123456', password_confirmation: '123456') }
+    given(:another_user) do
+      create(:user, email: '12345678@mail.ru', password: '123456', password_confirmation: '123456')
+    end
     given(:user) { create(:user) }
     let(:answer) { create(:answer, user_id: user.id) }
 

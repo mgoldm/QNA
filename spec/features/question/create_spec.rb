@@ -35,7 +35,9 @@ feature 'User can create question', "
   end
 
   describe 'Authenticated user' do
-    given(:another_user) { create(:user, email: '12345678@mail.ru', password: '123456', password_confirmation: '123456') }
+    given(:another_user) do
+      create(:user, email: '12345678@mail.ru', password: '123456', password_confirmation: '123456')
+    end
     let(:question) { create(:question, user_id: user.id) }
 
     scenario 'Author try to delete his question' do

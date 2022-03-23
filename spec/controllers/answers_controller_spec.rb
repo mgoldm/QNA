@@ -68,16 +68,16 @@ RSpec.describe AnswersController, type: :controller do
       end
 
       it 'changes answer attributes' do
-        patch :update, params: { id: answer, answer: { title: 'new title', correct: "true" } }
+        patch :update, params: { id: answer, answer: { title: 'new title', correct: 'true' } }
         answer.reload
 
         expect(answer.title).to eq 'new title'
-        expect(answer.correct).to eq "true"
+        expect(answer.correct).to eq 'true'
       end
 
       it 'redirect to updated answer' do
         patch :update,
-              params: { question_id: answer.question_id, id: answer, answer: { title: 'new title', correct: "true" } }
+              params: { question_id: answer.question_id, id: answer, answer: { title: 'new title', correct: 'true' } }
         expect(response).to redirect_to answer
       end
     end
@@ -92,7 +92,7 @@ RSpec.describe AnswersController, type: :controller do
         answer.reload
 
         expect(answer.title).to eq 'MyString'
-        expect(answer.correct).to eq "true"
+        expect(answer.correct).to eq 'true'
       end
 
       it 're-renders edit' do
