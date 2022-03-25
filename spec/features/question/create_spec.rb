@@ -34,31 +34,6 @@ feature 'User can create question', "
     end
   end
 
-  describe 'Authenticated user' do
-    given(:another_user) do
-      create(:user, email: '12345678@mail.ru', password: '123456', password_confirmation: '123456')
-    end
-    let(:question) { create(:question, user_id: user.id) }
-
-    scenario 'Author try to delete his question' do
-      sign_in(user)
-
-      visit question_path(question)
-      click_on 'Delete'
-
-      expect(page).to have_content 'Question was deleted successful'
-    end
-
-    scenario 'User try to delete answer' do
-      sign_in(another_user)
-
-      visit question_path(question)
-      click_on 'Delete'
-
-      expect(page).to have_content "You don't have permission"
-    end
-  end
-
   scenario 'Unauthenticated user tries to ask question' do
     visit questions_path
     click_on 'Ask question'

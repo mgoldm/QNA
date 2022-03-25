@@ -8,21 +8,6 @@ RSpec.describe AnswersController, type: :controller do
 
   before { sign_in(user) }
 
-  describe 'GET #show' do
-    before { get :show, params: { id: answer } }
-
-    it 'render show view' do
-      expect(response).to render_template(:show)
-    end
-  end
-
-  describe 'GET #new' do
-    it 'render new view' do
-      get :new, params: { question_id: answer.question_id }
-      expect(response).to render_template(:new)
-    end
-  end
-
   describe 'GET #edit' do
     it 'render edit view' do
       get :edit, params: { id: answer }
@@ -41,7 +26,7 @@ RSpec.describe AnswersController, type: :controller do
 
       it 'renders answer template' do
         post :create, params: { answer: attributes_for(:answer), question_id: answer.question_id }
-        expect(response).to redirect_to assigns(:answer)
+        expect(response).to redirect_to question_path(answer.question)
       end
     end
 
@@ -55,7 +40,7 @@ RSpec.describe AnswersController, type: :controller do
 
       it 're-renders new view' do
         post :create, params: { answer: attributes_for(:answer, :invalid), question_id: answer.question_id }
-        expect(response).to render_template :new
+        expect(response).to redirect_to question_path(answer.question)
       end
     end
   end
@@ -101,7 +86,7 @@ RSpec.describe AnswersController, type: :controller do
     end
   end
 
-  describe 'DELETE #destroy' do
+  describe 'Author DELETE #destroy' do
     before { sign_in(user) }
     let!(:answer) { create(:answer, title: '123', correct: 'true', user_id: user.id) }
 
@@ -110,6 +95,21 @@ RSpec.describe AnswersController, type: :controller do
     end
 
     it 'redirect to index' do
+      delete :destroy, params: { id: answer }
+      expect(response).to redirect_to question_path(answer.question)
+    end
+  end
+
+  describe 'user DELETE #destroy' do
+    let(:another_user) { create(:user) }
+    before { login(another_user) }
+    let!(:answer) { create(:answer) }
+
+    it 'delete question' do
+      expect { delete :destroy, params: { id: answer } }.to_not change(Answer, :count)
+    end
+
+    it 'redirect to show question' do
       delete :destroy, params: { id: answer }
       expect(response).to redirect_to question_path(answer.question)
     end

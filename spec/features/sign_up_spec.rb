@@ -11,7 +11,7 @@ feature 'User can sign up', "
     background do
       visit question_path(create(:question))
 
-      click_on 'New answer'
+      click_on 'Answer'
       click_on 'Sign up'
     end
 

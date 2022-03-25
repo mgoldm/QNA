@@ -1,0 +1,5 @@
+tr
+  td= question.title
+  td= question.body
+  td=button_to 'show', question_path(question), method: :get
+tr

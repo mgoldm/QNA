@@ -4,7 +4,7 @@ FactoryBot.define do
   factory :question do
     title { 'MyString' }
     body { 'MyString' }
-    user_id { create(:user).id }
+    user
 
     trait :invalid do
       title { nil }
