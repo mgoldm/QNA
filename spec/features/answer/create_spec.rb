@@ -31,11 +31,9 @@ feature 'User can create answer', "
     scenario 'Authenticated user answer for a question with errors' do
       click_on 'Answer'
 
-      expect(page).to have_content "Invalid values"
+      expect(page).to have_content 'Invalid values'
     end
   end
-
-
 
   scenario 'Unauthenticated user tries to answer on question' do
     visit question_path(question)

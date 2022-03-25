@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 feature 'Author can celete question', "
@@ -23,13 +25,13 @@ feature 'Author can celete question', "
 
       visit questions_path(question)
 
-      expect(page).to_not have_content "Delete"
+      expect(page).to_not have_content 'Delete'
     end
 
     scenario 'Unauthenticated user try to delete question' do
       visit questions_path(question)
 
-      expect(page).to_not have_content "Delete"
+      expect(page).to_not have_content 'Delete'
     end
   end
 end

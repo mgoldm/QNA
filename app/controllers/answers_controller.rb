@@ -2,7 +2,7 @@
 
 class AnswersController < ApplicationController
   before_action :authenticate_user!, except: %i[show]
-  before_action :load_question, only: %i[new create ]
+  before_action :load_question, only: %i[new create]
 
   def create
     @answer = @question.answers.new(answer_params)

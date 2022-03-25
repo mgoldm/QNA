@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 feature 'Author can delete his answer', "
@@ -9,11 +11,9 @@ feature 'Author can delete his answer', "
     let!(:question) { create(:question, user_id: user.id) }
     let(:another_user) { create(:user) }
 
-
     let!(:answer) { create(:answer, question_id: question.id, user_id: user.id) }
 
     scenario 'Author try to delete his question' do
-
       sign_in(user)
 
       visit question_path(question)
@@ -28,13 +28,13 @@ feature 'Author can delete his answer', "
 
       visit question_path(question)
 
-      expect(page).to_not have_content "Delete answer"
+      expect(page).to_not have_content 'Delete answer'
     end
 
     scenario 'Unauthenticated user try to delete question' do
       visit question_path(question)
 
-      expect(page).to_not have_content "Delete answer"
+      expect(page).to_not have_content 'Delete answer'
     end
   end
 end

@@ -132,9 +132,10 @@ RSpec.describe QuestionsController, type: :controller do
   end
 
   context 'Another user try to delete' do
-    let!(:question){create(:question)}
+    let!(:question) { create(:question) }
 
     it 'Another user try to delete question' do
-      expect { delete :destroy, params:{id: question} }.to_not change(Question, :count)    end
+      expect { delete :destroy, params: { id: question } }.to_not change(Question, :count)
+    end
   end
 end
