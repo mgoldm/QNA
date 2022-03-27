@@ -8,18 +8,21 @@ feature 'Author can delete his answer', "
   let!(:user) { create(:user) }
 
   describe 'Users try to delete' do
-    let!(:question) { create(:question, user_id: user.id) }
+    let!(:question) { create(:question, user: user) }
     let(:another_user) { create(:user) }
 
-    let!(:answer) { create(:answer, question_id: question.id, user_id: user.id) }
+    let!(:answer) { create(:answer, title: '123', question: question, user: user) }
 
     scenario 'Author try to delete his question' do
       sign_in(user)
 
       visit question_path(question)
 
+      expect(page).to have_content answer.title
+
       click_on 'Delete answer'
 
+      expect(page).to_not have_content answer.title
       expect(page).to have_content 'Answer was deleted successful'
     end
 

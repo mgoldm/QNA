@@ -11,7 +11,7 @@ class AnswersController < ApplicationController
     if @answer.save
       redirect_to question_path(@question), notice: 'Your answer successfully created'
     else
-      redirect_to question_path(@question), alert: 'Invalid values'
+      render :'questions/show'
     end
   end
 

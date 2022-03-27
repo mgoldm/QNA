@@ -9,14 +9,18 @@ feature 'Author can celete question', "
   describe 'Authenticated user' do
     let!(:another_user) { create(:user) }
 
-    let!(:question) { create(:question, user_id: user.id) }
+    let!(:question) { create(:question, title: '456', user: user) }
 
     scenario 'Author try to delete his question' do
       sign_in(user)
 
       visit question_path(question)
+
+      expect(page).to have_content question.title
+
       click_on 'Delete'
 
+      expect(page).to_not have_content question.title
       expect(page).to have_content 'Question was deleted successful'
     end
 
