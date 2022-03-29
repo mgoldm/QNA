@@ -3,7 +3,9 @@
 FactoryBot.define do
   factory :answer do
     title { 'MyString' }
-    correct { true }
+    correct { 'true' }
+    question
+    user
 
     trait :invalid do
       title { nil }

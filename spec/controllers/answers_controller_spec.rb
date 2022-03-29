@@ -4,21 +4,9 @@ require 'rails_helper'
 
 RSpec.describe AnswersController, type: :controller do
   let(:answer) { create(:answer, question_id: create(:question).id) }
+  let(:user) { create(:user) }
 
-  describe 'GET #show' do
-    before { get :show, params: { id: answer } }
-
-    it 'render show view' do
-      expect(response).to render_template(:show)
-    end
-  end
-
-  describe 'GET #new' do
-    it 'render new view' do
-      get :new, params: { question_id: answer.question_id }
-      expect(response).to render_template(:new)
-    end
-  end
+  before { sign_in(user) }
 
   describe 'GET #edit' do
     it 'render edit view' do
@@ -38,7 +26,7 @@ RSpec.describe AnswersController, type: :controller do
 
       it 'renders answer template' do
         post :create, params: { answer: attributes_for(:answer), question_id: answer.question_id }
-        expect(response).to redirect_to assigns(:answer)
+        expect(response).to redirect_to question_path(answer.question)
       end
     end
 
@@ -52,7 +40,7 @@ RSpec.describe AnswersController, type: :controller do
 
       it 're-renders new view' do
         post :create, params: { answer: attributes_for(:answer, :invalid), question_id: answer.question_id }
-        expect(response).to render_template :new
+        expect(response).to render_template :'questions/show'
       end
     end
   end
@@ -65,16 +53,16 @@ RSpec.describe AnswersController, type: :controller do
       end
 
       it 'changes answer attributes' do
-        patch :update, params: { id: answer, answer: { title: 'new title', correct: true } }
+        patch :update, params: { id: answer, answer: { title: 'new title', correct: 'true' } }
         answer.reload
 
         expect(answer.title).to eq 'new title'
-        expect(answer.correct).to eq true
+        expect(answer.correct).to eq 'true'
       end
 
       it 'redirect to updated answer' do
         patch :update,
-              params: { question_id: answer.question_id, id: answer, answer: { title: 'new title', correct: true } }
+              params: { question_id: answer.question_id, id: answer, answer: { title: 'new title', correct: 'true' } }
         expect(response).to redirect_to answer
       end
     end
@@ -84,11 +72,12 @@ RSpec.describe AnswersController, type: :controller do
         patch :update,
               params: { question_id: answer.question_id, id: answer, answer: attributes_for(:answer, :invalid) }
       end
+
       it 'does not change answer' do
         answer.reload
 
         expect(answer.title).to eq 'MyString'
-        expect(answer.correct).to eq true
+        expect(answer.correct).to eq 'true'
       end
 
       it 're-renders edit' do
@@ -98,15 +87,33 @@ RSpec.describe AnswersController, type: :controller do
   end
 
   describe 'DELETE #destroy' do
-    let!(:answer) { create(:answer, title: '123', correct: true, question_id: create(:question).id) }
+    context 'Author delete' do
+      before { sign_in(user) }
+      let!(:answer) { create(:answer, title: '123', correct: 'true', user_id: user.id) }
 
-    it 'deletes the question' do
-      expect { delete :destroy, params: { id: answer } }.to change(Answer, :count).by(-1)
+      it 'deletes the question' do
+        expect { delete :destroy, params: { id: answer } }.to change(Answer, :count).by(-1)
+      end
+
+      it 'redirect to index' do
+        delete :destroy, params: { id: answer }
+        expect(response).to redirect_to question_path(answer.question)
+      end
     end
 
-    it 'redirect to index' do
-      delete :destroy, params: { id: answer }
-      expect(response).to redirect_to question_path(answer.question)
+    context 'user DELETE' do
+      let(:another_user) { create(:user) }
+      before { login(another_user) }
+      let!(:answer) { create(:answer) }
+
+      it 'delete question' do
+        expect { delete :destroy, params: { id: answer } }.to_not change(Answer, :count)
+      end
+
+      it 'redirect to show question' do
+        delete :destroy, params: { id: answer }
+        expect(response).to redirect_to question_path(answer.question)
+      end
     end
   end
 end

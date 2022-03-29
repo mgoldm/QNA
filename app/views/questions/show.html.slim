@@ -1,0 +1,25 @@
+h1 = @question.title
+p= @question.body
+
+table
+  tr
+    th Title
+    th Body
+    th colspan="2"
+  tr
+- if @answers
+  = render @answers
+table
+
+h2 Add new answer
+- if @answer
+  = render 'shared/errors', resource: @answer
+
+= form_with model: [@question, @question.answers.build], local: true do |f|
+  = f.label :title
+  = f.text_field :title
+  = f.label :correct
+  = f.text_area :correct
+  = f.submit 'Answer'
+- if current_user&.author_of?(@question)
+  p= link_to 'Delete', question_path(@question), method: :delete
