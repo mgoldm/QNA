@@ -7,29 +7,19 @@ class AnswersController < ApplicationController
   def create
     @answer = @question.answers.new(answer_params)
     current_user.answers.push(@answer)
-
-    if @answer.save
-      redirect_to question_path(@question), notice: 'Your answer successfully created'
-    else
-      render :'questions/show'
-    end
+    @answer.save
   end
 
   def update
-    if answer.update(answer_params)
-      redirect_to @answer
-    else
-      render :edit
-    end
+    @question = answer.question
+    old_best = @question.best_answer[0]
+    answer.update(answer_params)
+
+    @question.best_answer.find(old_best.id).update(best: false) if @question.best_answer.count > 1
   end
 
   def destroy
-    if current_user.author_of?(answer)
-      answer.destroy
-      redirect_to question_path(answer.question), notice: 'Answer was deleted successful'
-    else
-      redirect_to question_path(answer.question), alert: "You don't have permission"
-    end
+    answer.destroy if current_user.author_of?(answer)
   end
 
   private
@@ -45,6 +35,6 @@ class AnswersController < ApplicationController
   helper_method :answer
 
   def answer_params
-    params.require(:answer).permit(:title, :correct)
+    params.require(:answer).permit(:title, :correct, :best)
   end
 end
