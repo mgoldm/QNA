@@ -18,17 +18,16 @@ feature 'User can create answer', "
       visit question_path(question)
     end
 
-    scenario 'Authenticated user answer' do
+    scenario 'Authenticated user answer', js: true do
       fill_in 'Title', with: 'Test answer'
       fill_in 'Correct', with: 'text text text'
       click_on 'Answer'
 
-      expect(page).to have_content 'Your answer successfully created'
       expect(page).to have_content 'Test answer'
       expect(page).to have_content 'text text text'
     end
 
-    scenario 'Authenticated user answer for a question with errors' do
+    scenario 'Authenticated user answer for a question with errors', js: true do
       click_on 'Answer'
 
       expect(page).to have_content 'error(s) detected'

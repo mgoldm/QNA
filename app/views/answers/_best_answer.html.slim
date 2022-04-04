@@ -1,0 +1,25 @@
+tr.best-answer*{ data: { answer: { id: answer.id } } }
+  td
+    = answer.id
+  td
+    = answer.title
+  td
+    = answer.correct
+  td
+    - if current_user&.author_of?(answer)
+      = form_with model: answer, html: { method: :delete }, local: false do |f|
+        = f.submit 'Delete answer'
+  td
+    - if current_user&.author_of?(answer)
+      p= link_to 'Edit', '#', class: 'edit-answer-link', data: { answer_id: answer.id }
+  td
+    - if current_user&.author_of?(answer.question)
+      = form_with model: answer, class: 'update-best hidden' do |f|
+        = f.label :best, "Select new best"
+        .best= f.check_box :best
+        = f.submit 'Select'
+  td
+    = form_with model: answer, class: 'hidden', html: { id: "edit-answer-#{answer.id}" } do |f|
+      = f.label :title
+      = f.text_area :correct
+      = f.submit 'Create'

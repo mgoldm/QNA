@@ -7,7 +7,7 @@ feature 'Author can delete his answer', "
 " do
   let!(:user) { create(:user) }
 
-  describe 'Users try to delete' do
+  describe 'Users try to delete', js: true do
     let!(:question) { create(:question, user: user) }
     let(:another_user) { create(:user) }
 
@@ -23,7 +23,6 @@ feature 'Author can delete his answer', "
       click_on 'Delete answer'
 
       expect(page).to_not have_content answer.title
-      expect(page).to have_content 'Answer was deleted successful'
     end
 
     scenario 'User try to delete answer' do
