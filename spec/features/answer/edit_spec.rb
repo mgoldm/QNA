@@ -59,11 +59,45 @@ i'd like to be able to edit my answer
       page.check('Select new best')
     end
 
-    scenario 'tries to edit other question' do
+    scenario 'tries to edit other answer' do
       sign_in(another_user)
       visit question_path(question)
 
-      expect(page).to_not have_content "Edit"
+      expect(page).to_not have_content 'Edit'
+    end
+
+    scenario 'Author add file to answer', js: true do
+      sign_in(user)
+      visit question_path(question)
+
+      click_on 'Edit'
+
+      within find('.answers') do
+        attach_file 'Files', "#{Rails.root}/spec/rails_helper.rb"
+      end
+
+      click_on 'Create'
+
+      expect(page).to have_link 'rails_helper.rb'
+    end
+
+    scenario 'Author delete file' do
+      sign_in(user)
+      visit question_path(question)
+
+      click_on 'Edit'
+
+      within find('.answer-files') do
+        attach_file 'Files', "#{Rails.root}/spec/rails_helper.rb"
+      end
+
+      click_on 'Create'
+
+      find('#answer_number').fill_in(with: 0)
+
+      click_on 'Select id'
+
+      expect(page).to_not have_link 'rails_helper.rb'
     end
   end
 end

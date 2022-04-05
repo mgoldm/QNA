@@ -1,0 +1,4 @@
+= form_with url: question_delete_files_path(question), class: 'select-question-file', method: :put do |f|
+  = f.label :file_id
+  = f.number_field :file_id, id: :question_number
+  = f.submit 'Select question file id'

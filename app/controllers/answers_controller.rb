@@ -22,6 +22,13 @@ class AnswersController < ApplicationController
     answer.destroy if current_user.author_of?(answer)
   end
 
+  def delete_files
+    if current_user.author_of?(answer) || current_user.author_of?(answer.question)
+      answer.files[params[:file_id].to_i].purge
+      redirect_to question_path(answer.question)
+    end
+  end
+
   private
 
   def load_question
@@ -35,6 +42,6 @@ class AnswersController < ApplicationController
   helper_method :answer
 
   def answer_params
-    params.require(:answer).permit(:title, :correct, :best)
+    params.require(:answer).permit(:title, :correct, :best, files: [])
   end
 end

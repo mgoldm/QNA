@@ -45,13 +45,22 @@ class QuestionsController < ApplicationController
     end
   end
 
+  def delete_files
+    @question = Question.with_attached_files.find(params[:question_id])
+
+    if current_user.author_of?(@question)
+      @question.files[params[:number].to_i].purge
+      redirect_to question_path(@question)
+    end
+  end
+
   private
 
   def question_params
-    params.require(:question).permit(:title, :body)
+    params.require(:question).permit(:title, :body, files: [])
   end
 
   def load_question
-    @question = Question.find(params[:id])
+    @question = Question.with_attached_files.find(params[:id])
   end
 end
