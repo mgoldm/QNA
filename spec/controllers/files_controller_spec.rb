@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 RSpec.describe FilesController, type: :controller do
@@ -12,7 +14,9 @@ RSpec.describe FilesController, type: :controller do
   describe 'DELETE #destroy' do
     context 'Author delete' do
       it 'delete file' do
-        expect { delete :destroy, params: { id: question.files.last }, format: :js }.to change(question.files, :count).by(-1)
+        expect do
+          delete :destroy, params: { id: question.files.last }, format: :js
+        end.to change(question.files, :count).by(-1)
       end
 
       it 'render destroy' do
@@ -26,7 +30,9 @@ RSpec.describe FilesController, type: :controller do
       before { login(another_user) }
 
       it 'delete file' do
-        expect { delete :destroy, params: { id: question.files.last, format: :js } }.to_not change(question.files, :count)
+        expect do
+          delete :destroy, params: { id: question.files.last, format: :js }
+        end.to_not change(question.files, :count)
       end
 
       it 'redirect to show question' do
