@@ -17,11 +17,19 @@ i'd like to be able to edit my answer
     expect(page).to_not have_content 'Edit'
   end
 
+  scenario 'tries to edit other answer' do
+    sign_in(another_user)
+    visit question_path(question)
+
+    expect(page).to_not have_content 'Edit'
+  end
+
   describe 'Authenticated user', js: true do
-    scenario 'edit his answer' do
+    before do
       sign_in(user)
       visit question_path(question)
-
+    end
+    scenario 'edit his answer' do
       click_on 'Edit'
 
       within '.answers' do
@@ -35,9 +43,6 @@ i'd like to be able to edit my answer
     end
 
     scenario 'edit his answer with errors' do
-      sign_in(user)
-      visit question_path(question)
-
       click_on 'Edit'
 
       within '.answers' do
@@ -48,9 +53,6 @@ i'd like to be able to edit my answer
     end
 
     scenario 'edit best answer' do
-      sign_in(user)
-      visit question_path(question)
-
       within '.select-best' do
         click_on 'Select best answer'
         click_on 'Select best answer'
@@ -59,17 +61,7 @@ i'd like to be able to edit my answer
       page.check('Select new best')
     end
 
-    scenario 'tries to edit other answer' do
-      sign_in(another_user)
-      visit question_path(question)
-
-      expect(page).to_not have_content 'Edit'
-    end
-
     scenario 'Author add file to answer', js: true do
-      sign_in(user)
-      visit question_path(question)
-
       click_on 'Edit'
 
       within find('.answers') do
@@ -82,9 +74,6 @@ i'd like to be able to edit my answer
     end
 
     scenario 'Author delete file' do
-      sign_in(user)
-      visit question_path(question)
-
       click_on 'Edit'
 
       within find('.answer-files') do
@@ -93,9 +82,7 @@ i'd like to be able to edit my answer
 
       click_on 'Create'
 
-      find('#answer_number').fill_in(with: 0)
-
-      click_on 'Select id'
+      click_on 'Delete file'
 
       expect(page).to_not have_link 'rails_helper.rb'
     end

@@ -2,12 +2,10 @@ h1 = @question.title
 p= @question.body
 
 - if @question.files.attached?
-  - @question.files.each_with_index do |file, index|
+  - @question.files.each do |file|
     p
-      = index
-      = link_to file.filename.to_s, url_for(file)
-
-      = render 'delete_question', question: @question
+      .delete-question-file
+        = render 'shared/delete_file', file: file
 
 .answers
   table

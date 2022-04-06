@@ -59,13 +59,14 @@ i'd like to be able to edit my answer
       within find('.add-files') do
         attach_file 'Files', "#{Rails.root}/spec/rails_helper.rb"
       end
+
       within find('.edit-question') do
         click_on 'Answer'
       end
 
-      find('#question_number').fill_in(with: 0)
-
-      click_on 'Select question file id'
+      within find('.delete-question-file') do
+        click_on 'Delete file'
+      end
 
       expect(page).to_not have_link 'rails_helper.rb'
     end

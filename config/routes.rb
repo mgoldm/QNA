@@ -5,12 +5,12 @@ Rails.application.routes.draw do
   root 'questions#index'
 
   resources :questions do
-    put :delete_files
     resources :answers, shallow: true do
       member do
-        put :delete_files
       end
     end
   end
+
+  resources :files, only: :destroy, shallow: true
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
 end

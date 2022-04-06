@@ -8,33 +8,26 @@ tr.answer*{ data: { answer: { id: answer.id } } }
       = answer.correct
     td
       - if answer.files.attached?
-        - answer.files.each_with_index do |file, index|
-          = index
-          = link_to file.filename.to_s, url_for(file)
-
+        - answer.files.each do |file|
+          = render 'shared/delete_file', file: file
     td
       - if current_user&.author_of?(answer) || current_user&.author_of?(answer.question)
         = form_with model: answer, html: { method: :delete }, local: false do |f|
           = f.submit 'Delete answer'
-        td
-          = form_with url: delete_files_answer_path(answer), class: 'select-file', local: false, method: :put do |f|
-            = f.label :number
-            = f.number_field :number, id: :answer_number
-            = f.submit 'Select id'
 
-    td
-      - if current_user&.author_of?(answer)
-        p= link_to 'Edit', '#', class: 'edit-answer-link', data: { answer_id: answer.id }
-    td
-      - if current_user&.author_of?(answer.question)
-        = form_with model: answer, class: 'update-best hidden' do |f|
-          = f.label :best, "Select new best"
-          .best= f.check_box :best
-          = f.submit 'Select'
-    td
-      = form_with model: answer, class: 'hidden', html: { id: "edit-answer-#{answer.id}" } do |f|
-        = f.label :title
-        = f.text_area :correct
-        .answer-files
-          = f.file_field :files, multiple: true
-        = f.submit 'Create'
+  td
+    - if current_user&.author_of?(answer)
+      p= link_to 'Edit', '#', class: 'edit-answer-link', data: { answer_id: answer.id }
+  td
+    - if current_user&.author_of?(answer.question)
+      = form_with model: answer, class: 'update-best hidden' do |f|
+        = f.label :best, "Select new best"
+        .best= f.check_box :best
+        = f.submit 'Select'
+  td
+    = form_with model: answer, class: 'hidden', html: { id: "edit-answer-#{answer.id}" } do |f|
+      = f.label :title
+      = f.text_area :correct
+      .answer-files
+        = f.file_field :files, multiple: true
+      = f.submit 'Create'
