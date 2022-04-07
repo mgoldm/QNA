@@ -6,7 +6,11 @@ p= @question.body
     p
       .delete-question-file
         = render 'shared/delete_file', file: file
-
+.links
+  p Links:
+  ul
+    - @question.links.each do |link|
+      li= link_to link.name, link.url
 .answers
   table
     thead
