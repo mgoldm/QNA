@@ -17,11 +17,19 @@ i'd like to be able to edit my answer
     expect(page).to_not have_content 'Edit'
   end
 
+  scenario 'tries to edit other answer' do
+    sign_in(another_user)
+    visit question_path(question)
+
+    expect(page).to_not have_content 'Edit'
+  end
+
   describe 'Authenticated user', js: true do
-    scenario 'edit his answer' do
+    before do
       sign_in(user)
       visit question_path(question)
-
+    end
+    scenario 'edit his answer' do
       click_on 'Edit'
 
       within '.answers' do
@@ -35,9 +43,6 @@ i'd like to be able to edit my answer
     end
 
     scenario 'edit his answer with errors' do
-      sign_in(user)
-      visit question_path(question)
-
       click_on 'Edit'
 
       within '.answers' do
@@ -48,9 +53,6 @@ i'd like to be able to edit my answer
     end
 
     scenario 'edit best answer' do
-      sign_in(user)
-      visit question_path(question)
-
       within '.select-best' do
         click_on 'Select best answer'
         click_on 'Select best answer'
@@ -59,11 +61,30 @@ i'd like to be able to edit my answer
       page.check('Select new best')
     end
 
-    scenario 'tries to edit other question' do
-      sign_in(another_user)
-      visit question_path(question)
+    scenario 'Author add file to answer', js: true do
+      click_on 'Edit'
 
-      expect(page).to_not have_content "Edit"
+      within find('.answers') do
+        attach_file 'Files', "#{Rails.root}/spec/rails_helper.rb"
+      end
+
+      click_on 'Create'
+
+      expect(page).to have_link 'rails_helper.rb'
+    end
+
+    scenario 'Author delete file' do
+      click_on 'Edit'
+
+      within find('.answer-files') do
+        attach_file 'Files', "#{Rails.root}/spec/rails_helper.rb"
+      end
+
+      click_on 'Create'
+
+      click_on 'Delete file'
+
+      expect(page).to_not have_link 'rails_helper.rb'
     end
   end
 end

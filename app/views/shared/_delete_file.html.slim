@@ -1,0 +1,4 @@
+.file*{ data: { file: { id: file.id } } }
+  = link_to file.filename.to_s, url_for(file)
+  = form_with url: file_path(file), method: :delete, class: 'select-question-file' do |f|
+    = f.submit 'Delete file'

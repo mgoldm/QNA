@@ -4,5 +4,9 @@
   = f.text_field :title
   = f.label :body
   = f.text_area :body
+
+  = f.label :files
+  .add-new-file
+    = f.file_field :files, multiple: true
   = f.submit 'Ask'
 
