@@ -11,6 +11,14 @@ tr.answer*{ data: { answer: { id: answer.id } } }
         - answer.files.each do |file|
           = render 'shared/delete_file', file: file
     td
+      - if @question.links.present?
+        .links
+          p Links:
+          ul
+            - answer.links.each do |link|
+              = render 'shared/delete_link', link: link
+
+    td
       - if current_user&.author_of?(answer) || current_user&.author_of?(answer.question)
         = form_with model: answer, html: { method: :delete }, local: false do |f|
           = f.submit 'Delete answer'
@@ -30,4 +38,11 @@ tr.answer*{ data: { answer: { id: answer.id } } }
       = f.text_area :correct
       .answer-files
         = f.file_field :files, multiple: true
+
+        p Links:
+        p
+          = f.fields_for :links do |l|
+            = render 'shared/link_fields', f: l
+          .links
+            = link_to_add_association 'add link', f, :links, partial: 'shared/link_fields'
       = f.submit 'Create'

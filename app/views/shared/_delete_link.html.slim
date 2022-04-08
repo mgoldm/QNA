@@ -1,0 +1,8 @@
+- if link.name.present?
+  .link*{ data: { link: { id: link.id } } }
+    - if link.gist?
+      = javascript_include_tag link.url+ ".js"
+    else
+      = link_to link.name, link.url
+    = form_with url: link_path(link), local: false, method: :delete, class: 'select-question-link' do |f|
+      = f.submit 'Delete link'

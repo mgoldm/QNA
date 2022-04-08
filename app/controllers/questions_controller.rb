@@ -9,12 +9,16 @@ class QuestionsController < ApplicationController
   end
 
   def show
+    @question.links.new
     @answers = @question.answers.all
+    @answer = @question.answers.new
+    @answer.links.build
   end
 
   def new
     @question = Question.new
     @question.links.new
+    @question.reward = Reward.new(question: @question)
   end
 
   def edit; end
@@ -49,7 +53,8 @@ class QuestionsController < ApplicationController
   private
 
   def question_params
-    params.require(:question).permit(:title, :body, files: [], links_attributes: [:name, :url])
+    params.require(:question).permit(:title, :body, files: [], links_attributes: %i[name url],
+                                                    reward_attributes: %i[name image])
   end
 
   def load_question

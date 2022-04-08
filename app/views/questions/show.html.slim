@@ -9,8 +9,8 @@ p= @question.body
 .links
   p Links:
   ul
-    - @question.links.each do |link|
-      li= link_to link.name, link.url
+    -@question.links.each do |link|
+      = render 'shared/delete_link', link: link
 .answers
   table
     thead
@@ -19,6 +19,7 @@ p= @question.body
         th Title
         th Body
         th Files
+        th Links
         th colspan="4"
     tbody
       - if @question.best_answer.present?
@@ -32,13 +33,21 @@ p= @question.body
     - if @answer
       = render 'shared/errors', resource: @answer
 
-= form_with model: [@question, @question.answers.build], local: false, class: 'new-answer' do |f|
+= form_with model: [@question, @answer], local: false, class: 'new-answer' do |f|
   = f.label :title
   = f.text_field :title
   = f.label :correct
   = f.text_area :correct
   = f.label :files
   = f.file_field :files, multiple: true
+
+  p Links:
+  p
+    = f.fields_for :links do |l|
+      = render 'shared/link_fields', f: l
+    .links
+      = link_to_add_association 'add task', f, :links, partial: 'shared/link_fields'
+
   = f.submit 'Answer'
 
 .question-action
@@ -57,5 +66,11 @@ p= @question.body
       .add-files
         = f.label :files
         = f.file_field :files, multiple: true
+      p Links:
+      p
+        = f.fields_for :links do |l|
+          = render 'shared/link_fields', f: l
+        .links
+          = link_to_add_association 'add link', f, :links, partial: 'shared/link_fields'
       .edit-question
         = f.submit 'Answer'

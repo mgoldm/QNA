@@ -29,6 +29,7 @@ i'd like to be able to edit my answer
       sign_in(user)
       visit question_path(question)
     end
+
     scenario 'edit his answer' do
       click_on 'Edit'
 

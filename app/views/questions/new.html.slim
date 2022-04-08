@@ -12,11 +12,18 @@
   p Links:
   p
     = f.fields_for :links do |l|
-      = l.label :name, 'Link name'
-      = l.text_field :name
+      = render 'shared/link_fields', f: l
+    .links
+      = link_to_add_association 'add task', f, :links, partial: 'shared/link_fields'
 
-      = l.label :url
-      = l.text_field :url
+  p Rewards:
+  .new-reward
+    = f.fields_for :reward do |r|
+      = r.label :name, 'Reward name'
+      = r.text_field :name
+
+      = r.label :image
+      = r.file_field :image, direct_upload: true
 
   = f.submit 'Ask'
 
