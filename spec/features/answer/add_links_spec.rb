@@ -12,40 +12,59 @@ feature 'User can add links to answer', "
   given!(:answer) { create(:answer, question: question, user: user) }
   given!(:url) { 'https://github.com/mgoldm/QNA' }
 
-  before do
-    sign_in(user)
-    visit question_path(question)
-  end
-
-  scenario 'User adds link when answer question', js: true do
-    fill_in 'Title', with: 'My answer'
-    fill_in 'Correct', with: 'My correct'
-
-    fill_in 'Link name', with: 'My gist'
-    fill_in 'Url', with: url
-
-    click_on 'Answer'
-
-    visit question_path(question)
-
-    within '.answers' do
-      expect(page).to have_content 'My gist'
+  describe 'Author' do
+    before do
+      sign_in(user)
+      visit question_path(question)
     end
-  end
 
-  scenario 'Author add link to answer', js: true do
-    click_on 'Edit'
-    click_on 'add link'
+    scenario 'User adds link when answer question', js: true do
+      fill_in 'Title', with: 'My answer'
+      fill_in 'Correct', with: 'My correct'
 
-    within find('.answers') do
       fill_in 'Link name', with: 'My gist'
       fill_in 'Url', with: url
+
+      click_on 'Answer'
+
+      visit question_path(question)
+
+      within '.answers' do
+        expect(page).to have_content 'My gist'
+      end
     end
 
-    click_on 'Create'
+    scenario 'Author add link to answer', js: true do
+      click_on 'Edit'
+      click_on 'add link'
 
-    visit question_path(question)
+      within find('.answers') do
+        fill_in 'Link name', with: 'My gist'
+        fill_in 'Url', with: url
+      end
 
-    expect(page).to have_content 'My gist'
+      click_on 'Create'
+
+      visit question_path(question)
+
+      expect(page).to have_content 'My gist'
+    end
+
+    scenario 'add links with errors', js: true do
+      within find('.answers') do
+
+        click_on 'Edit'
+
+        click_on 'add link'
+
+        fill_in 'Link name', with: '123'
+        fill_in 'Url', with: ""
+      end
+
+      click_on 'Create'
+
+      expect(page).to_not have_content "123"
+    end
   end
+
 end
