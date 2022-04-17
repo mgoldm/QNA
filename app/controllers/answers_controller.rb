@@ -16,9 +16,8 @@ class AnswersController < ApplicationController
 
     answer.update(answer_params)
 
-    @question.best_answer.find(old_best[0].id).update(best: false) if @question.best_answer.count > 1
+    answer.update_best(old_best) if @question.best_answer.count > 1
 
-    answer.user.rewards.push(@question.reward) if old_best != @question.best_answer
   end
 
   def destroy

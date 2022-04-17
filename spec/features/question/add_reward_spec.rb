@@ -41,11 +41,11 @@ feature 'User can add reward to question', "
     end
 
     click_on 'Ask'
-
-    fill_in 'Title', with: 'Test answer'
-    fill_in 'Correct', with: 'text text text'
-
-    click_on 'Answer'
+    within '.new-answer' do
+      fill_in 'Title', with: 'Test answer'
+      fill_in 'Correct', with: 'text text text'
+      click_on 'Answer'
+    end
 
     visit question_path(Question.last)
 

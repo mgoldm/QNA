@@ -10,4 +10,9 @@ class Answer < ApplicationRecord
 
   accepts_nested_attributes_for :links, reject_if: :all_blank
   validates :title, :correct, presence: true
+
+  def update_best(old_best)
+    question.best_answer.find(old_best.id).update(best: false)
+    user.rewards.push(question.reward) if old_best != question.best_answer
+  end
 end
