@@ -16,7 +16,7 @@ class AnswersController < ApplicationController
 
     answer.update(answer_params)
 
-    answer.update_best(old_best) if @question.best_answer.count > 1
+    answer.update_best(old_best) if current_user.author_of?(@question)
 
   end
 
