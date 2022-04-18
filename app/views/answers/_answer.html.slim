@@ -28,7 +28,7 @@ tr.answer*{ data: { answer: { id: answer.id } } }
       p= link_to 'Edit', '#', class: 'edit-answer-link', data: { answer_id: answer.id }
   td
     - if current_user&.author_of?(answer.question)
-      = form_with model: answer, class: 'update-best hidden' do |f|
+      = form_with url: update_best_answer_path(answer), method: :put, class: 'update-best hidden' do |f|
         = f.label :best, "Select new best"
         .best= f.check_box :best
         = f.submit 'Select'

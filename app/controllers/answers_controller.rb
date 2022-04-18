@@ -11,13 +11,11 @@ class AnswersController < ApplicationController
   end
 
   def update
-    @question = answer.question
-    old_best = @question.best_answer
-
     answer.update(answer_params)
+  end
 
-    answer.update_best(old_best) if current_user.author_of?(@question)
-
+  def update_best
+    answer.update_best if current_user.author_of?(answer.question)
   end
 
   def destroy

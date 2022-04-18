@@ -7,6 +7,7 @@ Rails.application.routes.draw do
   resources :questions do
     resources :answers, shallow: true do
       member do
+        put :update_best
       end
     end
   end

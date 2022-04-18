@@ -11,8 +11,9 @@ class Answer < ApplicationRecord
   accepts_nested_attributes_for :links, reject_if: :all_blank
   validates :title, :correct, presence: true
 
-  def update_best(old_best)
-    question.best_answer.find(old_best.id).update(best: false) if question.best_answer.count>1
-    user.rewards.push(question.reward) if old_best != question.best_answer
+  def update_best
+    question.best_answer[0].update(best: false) if question.best_answer.present?
+    update(best: true)
+    user.rewards.push(question.reward)
   end
 end
