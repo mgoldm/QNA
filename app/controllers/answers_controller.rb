@@ -15,7 +15,7 @@ class AnswersController < ApplicationController
   end
 
   def update_best
-    answer.update_best if current_user.author_of?(answer.question)
+    answer.update_best! if current_user.author_of?(answer.question)
   end
 
   def destroy

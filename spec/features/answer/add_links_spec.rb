@@ -52,19 +52,17 @@ feature 'User can add links to answer', "
 
     scenario 'add links with errors', js: true do
       within find('.answers') do
-
         click_on 'Edit'
 
         click_on 'add link'
 
         fill_in 'Link name', with: '123'
-        fill_in 'Url', with: ""
+        fill_in 'Url', with: ''
       end
 
       click_on 'Create'
 
-      expect(page).to_not have_content "123"
+      expect(page).to_not have_content '123'
     end
   end
-
 end
