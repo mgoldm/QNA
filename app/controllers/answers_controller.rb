@@ -11,11 +11,11 @@ class AnswersController < ApplicationController
   end
 
   def update
-    @question = answer.question
-    old_best = @question.best_answer[0]
     answer.update(answer_params)
+  end
 
-    @question.best_answer.find(old_best.id).update(best: false) if @question.best_answer.count > 1
+  def update_best
+    answer.update_best! if current_user.author_of?(answer.question)
   end
 
   def destroy
@@ -35,6 +35,6 @@ class AnswersController < ApplicationController
   helper_method :answer
 
   def answer_params
-    params.require(:answer).permit(:title, :correct, :best, files: [])
+    params.require(:answer).permit(:title, :correct, :best, files: [], links_attributes: %i[name url])
   end
 end

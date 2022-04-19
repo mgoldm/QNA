@@ -1,0 +1,5 @@
+= current_user.rewards.each do |reward|
+  li
+    h1=reward.question.title
+    p= link_to reward.name, url_for(reward.image)
+    p=image_tag(reward.image)

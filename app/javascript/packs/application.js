@@ -7,8 +7,10 @@ require("turbolinks").start()
 require("@rails/activestorage").start()
 require("channels")
 require('jquery')
+require("@nathanvda/cocoon")
 require("packs/edit")
 require("packs/answer")
+require("gist-embed")
 
 window.jQuery = $;
 window.$ = $;

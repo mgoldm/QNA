@@ -12,7 +12,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20_220_404_085_209) do
+ActiveRecord::Schema.define(version: 20_220_408_083_912) do
   create_table 'active_storage_attachments', force: :cascade do |t|
     t.string 'name', null: false
     t.string 'record_type', null: false
@@ -47,6 +47,16 @@ ActiveRecord::Schema.define(version: 20_220_404_085_209) do
     t.index ['user_id'], name: 'index_answers_on_user_id'
   end
 
+  create_table 'links', force: :cascade do |t|
+    t.string 'name'
+    t.string 'url'
+    t.string 'linkable_type'
+    t.integer 'linkable_id'
+    t.datetime 'created_at', precision: 6, null: false
+    t.datetime 'updated_at', precision: 6, null: false
+    t.index %w[linkable_type linkable_id], name: 'index_links_on_linkable_type_and_linkable_id'
+  end
+
   create_table 'questions', force: :cascade do |t|
     t.string 'title', null: false
     t.string 'body', null: false
@@ -54,6 +64,16 @@ ActiveRecord::Schema.define(version: 20_220_404_085_209) do
     t.datetime 'created_at', precision: 6, null: false
     t.datetime 'updated_at', precision: 6, null: false
     t.index ['user_id'], name: 'index_questions_on_user_id'
+  end
+
+  create_table 'rewards', force: :cascade do |t|
+    t.string 'name'
+    t.integer 'question_id'
+    t.integer 'user_id'
+    t.datetime 'created_at', precision: 6, null: false
+    t.datetime 'updated_at', precision: 6, null: false
+    t.index ['question_id'], name: 'index_rewards_on_question_id'
+    t.index ['user_id'], name: 'index_rewards_on_user_id'
   end
 
   create_table 'users', force: :cascade do |t|
@@ -72,4 +92,6 @@ ActiveRecord::Schema.define(version: 20_220_404_085_209) do
   add_foreign_key 'answers', 'questions'
   add_foreign_key 'answers', 'users'
   add_foreign_key 'questions', 'users'
+  add_foreign_key 'rewards', 'questions'
+  add_foreign_key 'rewards', 'users'
 end
