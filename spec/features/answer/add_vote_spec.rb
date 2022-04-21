@@ -36,6 +36,5 @@ feature 'User can add vote to answer', "
     click_on 'Save'
 
     expect(page).to have_content 1
-
   end
 end

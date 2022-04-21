@@ -38,7 +38,8 @@ RSpec.describe AnswersController, type: :controller do
       end
 
       it 'renders create template' do
-        post :create, params: { answer: attributes_for(:answer, :invalid), question_id: answer.question, format: :js }, as: :json
+        post :create, params: { answer: attributes_for(:answer, :invalid), question_id: answer.question, format: :js },
+                      as: :json
       end
     end
   end

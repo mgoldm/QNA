@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 RSpec.describe VotesController, type: :controller do
@@ -11,7 +13,7 @@ RSpec.describe VotesController, type: :controller do
       it 'saves a new answer in the database' do
         expect do
           post :vote,
-               params: {votable_id: answer, votable: answer.class.name, action: 1}, format: :json
+               params: { votable_id: answer, votable: answer.class.name, action: 1 }, format: :json
         end.to change(answer.votes, :count).by(1)
       end
     end
