@@ -34,11 +34,13 @@ i'd like to be able to edit my answer
       click_on 'Edit'
 
       within '.answers' do
-        fill_in 'Correct', with: 'edited correct'
+        fill_in 'Correct', with: 'edited title'
         click_on 'Create'
 
+        visit question_path(question)
+
         expect(page).to_not have_content answer.correct
-        expect(page).to have_content 'edited correct'
+        expect(page).to have_content 'edited title'
         expect(page).to_not have_selector 'textarea'
       end
     end
@@ -71,6 +73,8 @@ i'd like to be able to edit my answer
 
       click_on 'Create'
 
+      visit question_path(question)
+
       expect(page).to have_link 'rails_helper.rb'
     end
 
@@ -82,6 +86,8 @@ i'd like to be able to edit my answer
       end
 
       click_on 'Create'
+
+      visit question_path(question)
 
       click_on 'Delete file'
 
