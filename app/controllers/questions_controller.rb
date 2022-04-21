@@ -13,6 +13,7 @@ class QuestionsController < ApplicationController
     @answers = @question.answers.all
     @answer = @question.answers.new
     @answer.links.build
+    @answer.votes.build
   end
 
   def new

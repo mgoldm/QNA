@@ -30,7 +30,7 @@ feature 'User can create answer', "
     scenario 'Authenticated user answer for a question with errors', js: true do
       click_on 'Answer'
 
-      expect(page).to have_content 'error(s) detected'
+      expect(page).to have_content 'blank'
     end
   end
 
