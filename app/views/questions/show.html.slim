@@ -9,7 +9,7 @@ p= @question.body
 .links
   p Links:
   ul
-    -@question.links.each do |link|
+    - @question.links.each do |link|
       = render 'shared/delete_link', link: link
 .answers
   table
@@ -33,7 +33,7 @@ p= @question.body
     - if @answer
       = render 'shared/errors', resource: @answer
 
-= form_with model: [@question, @answer], local: false, class: 'new-answer' do |f|
+= form_with model: [@question, @answer], local: false, data: { type: :json }, class: 'new-answer' do |f|
   = f.label :title
   = f.text_field :title
   = f.label :correct
@@ -49,6 +49,7 @@ p= @question.body
       = link_to_add_association 'add task', f, :links, partial: 'shared/link_fields'
 
   = f.submit 'Answer'
+= link_to 'Back', questions_path
 
 .question-action
   - if current_user&.author_of?(@question)

@@ -1,0 +1,5 @@
+- unless current_user&.author_of?(answer)
+  = form_with url: votes_path(votable_id: answer.id), class: 'update-count', data: { type: :json } do |f|
+    = f.label :number
+    = f.select :number, Vote::ACTION_LIST, include_blank: 'Select'
+    = f.submit

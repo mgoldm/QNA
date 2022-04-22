@@ -7,7 +7,16 @@ class AnswersController < ApplicationController
   def create
     @answer = @question.answers.new(answer_params)
     current_user.answers.push(@answer)
-    @answer.save
+
+    respond_to do |format|
+      if @answer.save
+        format.json { render json: @answer }
+      else
+        format.json do
+          render json: @answer.errors.full_messages, status: :unprocessable_entity
+        end
+      end
+    end
   end
 
   def update

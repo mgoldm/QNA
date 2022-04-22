@@ -22,7 +22,10 @@ tr.answer*{ data: { answer: { id: answer.id } } }
       - if current_user&.author_of?(answer) || current_user&.author_of?(answer.question)
         = form_with model: answer, html: { method: :delete }, local: false do |f|
           = f.submit 'Delete answer'
-
+    td
+      .votes
+        = render 'votes/form', answer: answer
+      .pointer = answer.counter
   td
     - if current_user&.author_of?(answer)
       p= link_to 'Edit', '#', class: 'edit-answer-link', data: { answer_id: answer.id }
