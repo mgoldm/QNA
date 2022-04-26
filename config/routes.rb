@@ -16,5 +16,7 @@ Rails.application.routes.draw do
   resources :rewards, only: :index, shallow: true
   resources :files, only: :destroy, shallow: true
   resources :links, only: :destroy, shallow: true
+
+  mount ActionCable.server => '/cable'
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
 end
