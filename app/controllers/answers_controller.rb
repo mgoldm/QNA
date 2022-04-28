@@ -4,6 +4,8 @@ class AnswersController < ApplicationController
   before_action :authenticate_user!, except: %i[show]
   before_action :load_question, only: %i[new create]
 
+  after_action :publish_answer, only: :create
+
   def create
     @answer = @question.answers.new(answer_params)
     current_user.answers.push(@answer)
@@ -32,6 +34,24 @@ class AnswersController < ApplicationController
   end
 
   private
+
+  def publish_answer
+    return if answer.errors.any?
+    ActionCable.server.broadcast(
+      "questions/#{answer.question_id}/answers",
+      {
+        answer: ApplicationController.render(
+          partial: 'answers/answer',
+          locals: {
+            answer: answer, current_user: current_user
+          }
+        ),
+        answer_id: answer.id,
+        answer_author_id: answer.user_id,
+        question_author_id: answer.question.user_id
+      }
+    )
+  end
 
   def load_question
     @question = Question.find(params[:question_id])

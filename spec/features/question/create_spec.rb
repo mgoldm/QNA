@@ -46,23 +46,27 @@ feature 'User can create question', "
       expect(page).to have_link 'rails_helper.rb'
     end
 
-    context "multiply sessions" do
-      scenario "question appears on another users page" do
+    context 'multiply sessions' do
+      scenario 'question appears on another users page' do
         Capybara.using_session('user') do
           sign_in(user)
           visit questions_path
         end
-        Capybara.using_seshsion('guest') do
+        Capybara.using_session('guest') do
           visit questions_path
         end
 
         Capybara.using_session('user') do
-          page.find("add_question_btn".trigger('click'))
-          visit questions_path(question)
+          click_on 'Ask question'
 
           fill_in 'Title', with: 'Test question'
           fill_in 'Body', with: 'test test'
           click_on 'Ask'
+        end
+
+        Capybara.using_session('guest') do
+          visit questions_path
+          expect(page).to have_content 'Test question'
         end
       end
     end

@@ -1,7 +1,7 @@
 $ ->
   questionForm = $("#question_form")
   addQuestionBtn = $("#add_question_btn")
-  questionsList = $(".questions-list")
+  questionsList = $(".questions")
 
   addQuestionBtn.on 'click', (e) ->
     e.preventDefault()
