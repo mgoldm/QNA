@@ -12,7 +12,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20_220_420_074_851) do
+ActiveRecord::Schema.define(version: 20_220_428_143_018) do
   create_table 'active_storage_attachments', force: :cascade do |t|
     t.string 'name', null: false
     t.string 'record_type', null: false
@@ -45,6 +45,17 @@ ActiveRecord::Schema.define(version: 20_220_420_074_851) do
     t.boolean 'best', default: false
     t.index ['question_id'], name: 'index_answers_on_question_id'
     t.index ['user_id'], name: 'index_answers_on_user_id'
+  end
+
+  create_table 'comments', force: :cascade do |t|
+    t.string 'comment'
+    t.integer 'user_id', null: false
+    t.string 'commentable_type'
+    t.integer 'commentable_id'
+    t.datetime 'created_at', precision: 6, null: false
+    t.datetime 'updated_at', precision: 6, null: false
+    t.index %w[commentable_type commentable_id], name: 'index_comments_on_commentable_type_and_commentable_id'
+    t.index ['user_id'], name: 'index_comments_on_user_id'
   end
 
   create_table 'links', force: :cascade do |t|
@@ -102,6 +113,7 @@ ActiveRecord::Schema.define(version: 20_220_420_074_851) do
   add_foreign_key 'active_storage_attachments', 'active_storage_blobs', column: 'blob_id'
   add_foreign_key 'answers', 'questions'
   add_foreign_key 'answers', 'users'
+  add_foreign_key 'comments', 'users'
   add_foreign_key 'questions', 'users'
   add_foreign_key 'rewards', 'questions'
   add_foreign_key 'rewards', 'users'

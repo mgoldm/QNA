@@ -2,7 +2,7 @@
 
 class QuestionsController < ApplicationController
   before_action :authenticate_user!, except: %i[index show]
-  before_action :load_question, only: %i[show edit update destroy ]
+  before_action :load_question, only: %i[show edit update destroy]
   before_action :gon_question, except: %i[index new]
 
   after_action :publish_question, only: :create
@@ -70,7 +70,7 @@ class QuestionsController < ApplicationController
 
   def question_params
     params.require(:question).permit(:title, :body, files: [], links_attributes: %i[name url],
-                                     reward_attributes: %i[name image])
+                                                    reward_attributes: %i[name image])
   end
 
   def load_question

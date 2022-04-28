@@ -11,6 +11,10 @@ p= @question.body
   ul
     - @question.links.each do |link|
       = render 'shared/delete_link', link: link
+
+.question-comments*{ data: { question: { id: @question.id } } }
+  =render 'comments/comment', commentable: @question
+
 .answers
   table
     thead

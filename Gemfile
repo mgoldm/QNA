@@ -34,10 +34,10 @@ gem 'cocoon'
 gem 'decent_exposure', '~> 3.0'
 gem 'devise'
 gem 'gist-embed-rails'
-gem 'jquery-rails'
-gem 'slim-rails'
 gem 'gon'
+gem 'jquery-rails'
 gem 'skim'
+gem 'slim-rails'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console

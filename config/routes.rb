@@ -13,6 +13,7 @@ Rails.application.routes.draw do
   end
 
   post :votes, to: 'votes#vote'
+  resources :comments, only: :create, shallow: true
   resources :rewards, only: :index, shallow: true
   resources :files, only: :destroy, shallow: true
   resources :links, only: :destroy, shallow: true

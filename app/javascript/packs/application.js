@@ -10,6 +10,7 @@ require('jquery')
 require("@nathanvda/cocoon")
 require("packs/edit")
 require("packs/answer")
+require("packs/comment")
 
 window.jQuery = $;
 window.$ = $;

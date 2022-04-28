@@ -1,0 +1,5 @@
+- commentable.comments.each do |comment|
+  .comment*{ data: { comment: { id: comment.id } } }
+    = "User login: #{comment.user.email}"
+    p= comment.comment
+= render 'comments/form', commentable: commentable

@@ -51,3 +51,6 @@ tr.answer*{ data: { answer: { id: answer.id } } }
           .links
             = link_to_add_association 'add link', f, :links, partial: 'shared/link_fields'
       = f.submit 'Create'
+  td
+    .answer-comments*{ data: { answer: { id: answer.id } } }
+      p= render 'comments/comment', commentable: answer
