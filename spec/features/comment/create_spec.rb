@@ -30,7 +30,7 @@ feature 'User can create question', "
 
         Capybara.using_session('guest') do
           visit questions_path
-          expect(page).to have_content 'Test question'
+          expect(page).to have_content 'Test comment'
         end
       end
     end
