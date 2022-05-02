@@ -34,7 +34,9 @@ gem 'cocoon'
 gem 'decent_exposure', '~> 3.0'
 gem 'devise'
 gem 'gist-embed-rails'
+gem 'gon'
 gem 'jquery-rails'
+gem 'skim'
 gem 'slim-rails'
 
 group :development, :test do

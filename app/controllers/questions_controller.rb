@@ -3,6 +3,9 @@
 class QuestionsController < ApplicationController
   before_action :authenticate_user!, except: %i[index show]
   before_action :load_question, only: %i[show edit update destroy]
+  before_action :gon_question, except: %i[index new]
+
+  after_action :publish_question, only: :create
 
   def index
     @questions = Question.all
@@ -52,6 +55,18 @@ class QuestionsController < ApplicationController
   end
 
   private
+
+  def gon_question
+    gon.question_id = @question.id
+  end
+
+  def publish_question
+    return if @question.errors.any?
+
+    ActionCable.server.broadcast 'questions',
+                                 ApplicationController.render(partial: 'questions/question',
+                                                              locals: { question: @question })
+  end
 
   def question_params
     params.require(:question).permit(:title, :body, files: [], links_attributes: %i[name url],

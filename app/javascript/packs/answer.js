@@ -1,4 +1,5 @@
 $(document).on('turbolinks:load', function () {
+    console.log('123')
     $('.answers').on('click', '.edit-answer-link', function (e) {
         e.preventDefault();
         $(this).hide();

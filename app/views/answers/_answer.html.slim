@@ -11,7 +11,7 @@ tr.answer*{ data: { answer: { id: answer.id } } }
         - answer.files.each do |file|
           = render 'shared/delete_file', file: file
     td
-      - if @question.links.present?
+      - if answer.question.links.present?
         .links
           p Links:
           ul
@@ -19,22 +19,24 @@ tr.answer*{ data: { answer: { id: answer.id } } }
               = render 'shared/delete_link', link: link
 
     td
-      - if current_user&.author_of?(answer) || current_user&.author_of?(answer.question)
-        = form_with model: answer, html: { method: :delete }, local: false do |f|
-          = f.submit 'Delete answer'
+      .answer-author
+        - if current_user&.author_of?(answer) || current_user&.author_of?(answer.question)
+          = form_with model: answer, html: { method: :delete }, local: false do |f|
+            = f.submit 'Delete answer'
     td
       .votes
-        = render 'votes/form', answer: answer
+        = render 'votes/form', answer: answer, current_user: current_user
       .pointer = answer.counter
+    td
+      - if current_user&.author_of?(answer)
+        p= link_to 'Edit', '#', class: 'edit-answer-link', data: { answer_id: answer.id }
   td
-    - if current_user&.author_of?(answer)
-      p= link_to 'Edit', '#', class: 'edit-answer-link', data: { answer_id: answer.id }
-  td
-    - if current_user&.author_of?(answer.question)
-      = form_with url: update_best_answer_path(answer), method: :put, class: 'update-best hidden' do |f|
-        = f.label :best, "Select new best"
-        .best= f.check_box :best
-        = f.submit 'Select'
+    .question-author
+      - if current_user&.author_of?(answer.question)
+        = form_with url: update_best_answer_path(answer), method: :put, class: 'update-best hidden' do |f|
+          = f.label :best, "Select new best"
+          .best= f.check_box :best
+          = f.submit 'Select'
   td
     = form_with model: answer, class: 'hidden', html: { id: "edit-answer-#{answer.id}" } do |f|
       = f.label :title
@@ -49,3 +51,6 @@ tr.answer*{ data: { answer: { id: answer.id } } }
           .links
             = link_to_add_association 'add link', f, :links, partial: 'shared/link_fields'
       = f.submit 'Create'
+  td
+    .answer-comments*{ data: { answer: { id: answer.id } } }
+      p= render 'comments/comment', commentable: answer
