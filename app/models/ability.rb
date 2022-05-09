@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Ability
   include CanCan::Ability
 
@@ -25,5 +27,6 @@ class Ability
     guest_abilities
     can :create, [Question, Answer, Comment]
     can :update, [Question, Answer, Comment], user_id: user.id
+    can :destroy, [Question, Answer, Comment], user_id: user.id
   end
 end

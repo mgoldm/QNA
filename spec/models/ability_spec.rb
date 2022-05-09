@@ -1,5 +1,7 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
-require "cancan/matchers"
+require 'cancan/matchers'
 
 describe Ability, type: :model do
   subject(:ability) { Ability.new(user) }
@@ -38,6 +40,5 @@ describe Ability, type: :model do
 
     it { should be_able_to :update, create(:comment, commentable: question2, user: user), user: user }
     it { should_not be_able_to :update, create(:comment, commentable: question2, user: other), user: user }
-
   end
 end

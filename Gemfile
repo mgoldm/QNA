@@ -30,15 +30,16 @@ gem 'jbuilder', '~> 2.7'
 # Reduces boot times through caching; required in config/boot.rb
 gem 'aws-sdk-s3', '~> 1'
 gem 'bootsnap', '>= 1.4.2', require: false
+gem 'cancancan'
 gem 'cocoon'
 gem 'decent_exposure', '~> 3.0'
 gem 'devise'
 gem 'gist-embed-rails'
 gem 'gon'
 gem 'jquery-rails'
+gem 'pundit'
 gem 'skim'
 gem 'slim-rails'
-gem 'cancancan'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
