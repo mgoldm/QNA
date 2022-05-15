@@ -1,7 +1,9 @@
 # frozen_string_literal: true
 
 Rails.application.routes.draw do
+  use_doorkeeper
   devise_for :users
+
   root 'questions#index'
 
   resources :questions do
@@ -17,6 +19,14 @@ Rails.application.routes.draw do
   resources :rewards, only: :index, shallow: true
   resources :files, only: :destroy, shallow: true
   resources :links, only: :destroy, shallow: true
+
+  namespace :api do
+    namespace :v1 do
+      resources :profiles, only:[] do
+        get :me, on: :collection
+      end
+    end
+  end
 
   mount ActionCable.server => '/cable'
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
