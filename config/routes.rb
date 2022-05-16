@@ -22,10 +22,13 @@ Rails.application.routes.draw do
 
   namespace :api do
     namespace :v1 do
-      resources :profiles, only: [] do
+      resources :profiles, only: [:index] do
         get :me, on: :collection
       end
-      resources :questions, only: %i[index show new create destroy update]
+
+      resources :questions do
+        resources :answers, only: [:create, :update, :destroy], shallow: true
+      end
     end
   end
 
