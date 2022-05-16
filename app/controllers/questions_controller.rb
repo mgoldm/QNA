@@ -7,6 +7,8 @@ class QuestionsController < ApplicationController
 
   after_action :publish_question, only: :create
 
+  authorize_resource
+
   def index
     @questions = Question.all
   end
@@ -46,8 +48,7 @@ class QuestionsController < ApplicationController
   end
 
   def destroy
-    if current_user.author_of?(@question)
-      @question.destroy
+    if @question.destroy
       redirect_to questions_path, notice: 'Question was deleted successful'
     else
       redirect_to question_path(@question), alert: "You don't have permission"
@@ -70,7 +71,7 @@ class QuestionsController < ApplicationController
 
   def question_params
     params.require(:question).permit(:title, :body, files: [], links_attributes: %i[name url],
-                                                    reward_attributes: %i[name image])
+                                     reward_attributes: %i[name image])
   end
 
   def load_question

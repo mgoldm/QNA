@@ -2,6 +2,7 @@
 
 class AnswersController < ApplicationController
   before_action :authenticate_user!, except: %i[show]
+  before_action :authorize_answer
   before_action :load_question, only: %i[new create]
 
   after_action :publish_answer, only: :create
@@ -26,11 +27,11 @@ class AnswersController < ApplicationController
   end
 
   def update_best
-    answer.update_best! if current_user.author_of?(answer.question)
+    answer.update_best!
   end
 
   def destroy
-    answer.destroy if current_user.author_of?(answer)
+    answer.destroy
   end
 
   private
@@ -52,6 +53,10 @@ class AnswersController < ApplicationController
         question_author_id: answer.question.user_id
       }
     )
+  end
+
+  def authorize_answer
+    authorize answer
   end
 
   def load_question
