@@ -6,10 +6,6 @@ class QuestionSerializer < ActiveModel::Serializer
   has_many :answers
   has_many :links
   has_many :comments
-  has_many :files, serializer:
+  has_many :files, serializer: AttachmentSerializer
 
-  def short_title
-    object.title.truncate(7)
-  end
-  # belongs_to :user
 end
