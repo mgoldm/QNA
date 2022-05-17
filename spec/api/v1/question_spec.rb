@@ -19,6 +19,7 @@ describe 'Questions API', type: :request do
       let(:question) { questions.first }
       let(:question_response) { json['questions'].first }
       let!(:answers) { create_list(:answer, 3, question: question) }
+      let!(:comments) { create_list(:comment, 3, commentable: question) }
 
       before { get '/api/v1/questions', params: { access_token: access_token.token }, headers: headers }
 
@@ -38,6 +39,30 @@ describe 'Questions API', type: :request do
 
       it 'contains short title' do
         expect(question_response['short_title']).to eq question.title.truncate(7)
+      end
+
+      describe 'answers' do
+        let(:answer) { answers.first }
+        let(:answer_response) { question_response['answers'].first }
+
+        it_behaves_like 'API comments' do
+          let(:json_response) { answer_response }
+          let(:parent_response) { question_response['answers'] }
+          let(:mas) { %w[id title correct user_id created_at updated_at] }
+          let(:type) { answer }
+        end
+      end
+
+      describe 'comments' do
+        let(:comment){comments.first}
+        let(:comment_response) { question_response['comments'].first }
+
+        it_behaves_like 'API comments' do
+          let(:json_response) { comment_response }
+          let(:parent_response) { question_response['comments'] }
+          let(:mas) { %w[id comment user_id user_id created_at updated_at] }
+          let(:type) { comment }
+        end
       end
 
       describe ' Show' do
@@ -90,36 +115,6 @@ describe 'Questions API', type: :request do
         end
       end
 
-      describe 'answers' do
-        let(:answer) { answers.first }
-        let(:answer_response) { question_response['answers'].first }
-
-        it 'returns list of answers' do
-          expect(question_response['answers'].size).to eq 3
-        end
-
-        it 'returns all public fields' do
-          %w[id title correct user_id created_at updated_at].each do |attr|
-            expect(answer_response[attr]).to eq answer.send(attr).as_json
-          end
-        end
-      end
-
-      describe 'comments' do
-        let(:user){create(:user)}
-        let!(:comment) { create(:comment, commentable: question, comment: '123', user: user) }
-        let(:comment_response) { question_response['comments'].first }
-
-        it 'returns list of comments' do
-          expect(question_response['comments'].size).to eq 1
-        end
-
-        it 'returns all public fields' do
-          %w[id comment user_id user_id created_at updated_at].each do |attr|
-            expect(comment_response[attr]).to eq comment.send(attr).as_json
-          end
-        end
-      end
     end
   end
 end
