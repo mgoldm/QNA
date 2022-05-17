@@ -16,7 +16,10 @@ describe 'Answer API', type: :request do
   context 'authorized' do
     let(:access_token) { create(:access_token) }
     let(:question) { create(:question) }
-    let(:answer) { create(:answer, question: question) }
+    let!(:answers) { create_list(:answer, 3, question: question) }
+    let(:answer) { answers.first }
+    let!(:comments) { create_list(:comment, 3, commentable: answer) }
+    let!(:links) { create_list(:link, 3, linkable: answer) }
     describe 'Post' do
       it 'should create new' do
         post "/api/v1/questions/#{question.id}/answers",
@@ -51,27 +54,35 @@ describe 'Answer API', type: :request do
     describe 'delete' do
       it 'delete question' do
         delete "/api/v1/answers/#{answer.id}", params: { access_token: access_token.token }
-        expect(Answer.count).to eq 0
+        expect(Answer.count).to eq 2
       end
     end
 
     describe 'comments' do
-      let(:user) { create(:user) }
-      let!(:comments) { create_list(:comment, 3, commentable: answer, user: user) }
       let(:answer_response) { json['question']['answers'].first }
-      let(:comment_response) { answer_response['comments'] }
+      let(:comment_response) { answer_response['comments'].first }
 
       before { get "/api/v1/questions/#{question.id}", params: { access_token: access_token.token }, headers: headers }
 
-      it 'returns list of answers' do
-        comments
-        expect(comment_response.size).to eq 3
+      it_behaves_like 'API list of' do
+        let(:json_response) { comment_response }
+        let(:parent_response) { answer_response['comments'] }
+        let(:mas) { %w[id comment  user_id created_at updated_at] }
+        let(:type) { comment }
       end
+    end
 
-      it 'returns all public fields' do
-        %w[id comment user_id user_id created_at updated_at].each do |attr|
-          expect(comment_response[attr]).to eq comment.send(attr).as_json
-        end
+    describe 'links' do
+      let(:answer_response) { json['question']['answers'].first }
+      let(:link_response) { answer_response['linkss'].first }
+
+      before { get "/api/v1/questions/#{question.id}", params: { access_token: access_token.token }, headers: headers }
+
+      it_behaves_like 'API list of' do
+        let(:json_response) { link_response }
+        let(:parent_response) { link_response['links'] }
+        let(:mas) { %w[id name url created_at updated_at] }
+        let(:type) { link }
       end
     end
   end
