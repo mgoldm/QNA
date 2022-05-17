@@ -5,10 +5,7 @@ class AnswerSerializer < ActiveModel::Serializer
 
   has_many :links
   has_many :comments
-  has_many :files, serializer:
+  has_many :files, serializer: AttachmentSerializer
 
-    def short_title
-      object.title.truncate(7)
-    end
 end
 
