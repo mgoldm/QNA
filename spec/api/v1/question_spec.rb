@@ -14,14 +14,17 @@ describe 'Questions API', type: :request do
     end
 
     context 'authorized' do
-      let(:access_token) { create(:access_token) }
-      let!(:questions) { create_list(:question, 2) }
+      let!(:access_token) { create(:access_token) }
+      let!(:user_id) { access_token.resource_owner_id }
+      let!(:questions) { create_list(:question, 2, user_id: user_id) }
       let(:question) { questions.first }
       let(:question_response) { json['questions'].first }
       let!(:answers) { create_list(:answer, 3, question: question) }
       let!(:comments) { create_list(:comment, 3, commentable: question) }
       let!(:links) { create_list(:link, 3, linkable: question) }
-      before { get '/api/v1/questions', params: { access_token: access_token.token }, headers: headers }
+      before do
+        get '/api/v1/questions', params: { access_token: access_token.token }, headers: headers
+      end
 
       it 'returns 200 status' do
         expect(response).to be_successful
@@ -79,7 +82,7 @@ describe 'Questions API', type: :request do
 
       describe ' Show' do
         before do
-          get "/api/v1/questions/#{question.id}", params: { access_token: access_token.token }, headers: headers
+          get "/api/v1/questions/#{question.id}", params: {access_token: access_token.token }, headers: headers
         end
         it 'show question' do
           expect(response).to be_successful
@@ -100,7 +103,7 @@ describe 'Questions API', type: :request do
 
         it 'invalid values ' do
           post '/api/v1/questions',
-               params: { question: attributes_for(:question, title: ''), access_token: access_token.token }
+               params: { question: attributes_for(:question, title: '', user_id: user_id), access_token: access_token.token }
           expect(response).to have_http_status(:unprocessable_entity)
         end
       end

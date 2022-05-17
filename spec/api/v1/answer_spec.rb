@@ -15,8 +15,9 @@ describe 'Answer API', type: :request do
 
   context 'authorized' do
     let(:access_token) { create(:access_token) }
-    let(:question) { create(:question) }
-    let!(:answers) { create_list(:answer, 3, question: question) }
+    let!(:user_id) { access_token.resource_owner_id }
+    let(:question) { create(:question, user_id: user_id) }
+    let!(:answers) { create_list(:answer, 3, question: question, user_id: user_id) }
     let(:answer) { answers.first }
     let!(:comments) { create_list(:comment, 3, commentable: answer) }
     let!(:links) { create_list(:link, 3, linkable: answer) }

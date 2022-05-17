@@ -3,6 +3,8 @@
 module Api
   module V1
     class QuestionsController < Api::V1::BaseController
+      load_and_authorize_resource
+
       def index
         @questions = Question.all
         render json: @questions
@@ -32,10 +34,9 @@ module Api
       end
 
       def destroy
-        @questions = Question.all
         @question = Question.find(params[:id])
         @question.destroy
-        render json: @questions
+        render json: @question
       end
 
       private
