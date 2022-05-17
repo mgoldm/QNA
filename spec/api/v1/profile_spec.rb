@@ -12,8 +12,8 @@ describe 'Profile API', type: :request do
   describe 'GET /api/v1/profiles/me' do
 
     it_behaves_like 'API Authorizable' do
-      let(:api_path) {'/api/v1/profiles/me'}
-      let(:method){:get}
+      let(:api_path) { '/api/v1/profiles/me' }
+      let(:method) { :get }
     end
 
     context 'authorized' do
@@ -21,11 +21,14 @@ describe 'Profile API', type: :request do
       let(:access_token) { create(:access_token, resource_owner_id: me.id) }
 
       describe 'profiles' do
-
         before { get "/api/v1/profiles", params: { access_token: access_token.token }, headers: headers
         }
-        it 'return all users' do
+        it 'return status 200' do
           expect(response).to be_successful
+        end
+
+        it 'returns list of users' do
+          expect(json['users'].size).to eq 3
         end
 
         it 'return all public fields' do
