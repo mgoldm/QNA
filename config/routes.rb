@@ -27,7 +27,7 @@ Rails.application.routes.draw do
       end
 
       resources :questions do
-        resources :answers, only: [:create, :update, :destroy], shallow: true
+        resources :answers, only: %i[create update destroy], shallow: true
       end
     end
   end

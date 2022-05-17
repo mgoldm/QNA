@@ -3,7 +3,6 @@
 module Api
   module V1
     class AnswersController < Api::V1::BaseController
-
       def create
         @question = Question.find(params[:question_id])
         @answer = @question.answers.new(answer_params)
@@ -39,4 +38,3 @@ module Api
     end
   end
 end
-

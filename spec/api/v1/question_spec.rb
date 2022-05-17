@@ -20,7 +20,7 @@ describe 'Questions API', type: :request do
       let(:question_response) { json['questions'].first }
       let!(:answers) { create_list(:answer, 3, question: question) }
       let!(:comments) { create_list(:comment, 3, commentable: question) }
-
+      let!(:links) { create_list(:link, 3, linkable: question) }
       before { get '/api/v1/questions', params: { access_token: access_token.token }, headers: headers }
 
       it 'returns 200 status' do
@@ -45,7 +45,7 @@ describe 'Questions API', type: :request do
         let(:answer) { answers.first }
         let(:answer_response) { question_response['answers'].first }
 
-        it_behaves_like 'API comments' do
+        it_behaves_like 'API list of' do
           let(:json_response) { answer_response }
           let(:parent_response) { question_response['answers'] }
           let(:mas) { %w[id title correct user_id created_at updated_at] }
@@ -54,14 +54,26 @@ describe 'Questions API', type: :request do
       end
 
       describe 'comments' do
-        let(:comment){comments.first}
+        let(:comment) { comments.first }
         let(:comment_response) { question_response['comments'].first }
 
-        it_behaves_like 'API comments' do
+        it_behaves_like 'API list of' do
           let(:json_response) { comment_response }
           let(:parent_response) { question_response['comments'] }
           let(:mas) { %w[id comment user_id user_id created_at updated_at] }
           let(:type) { comment }
+        end
+      end
+
+      describe 'links' do
+        let(:link) { links.first }
+        let(:link_response) { question_response['links'].first }
+
+        it_behaves_like 'API list of' do
+          let(:json_response) { link_response }
+          let(:parent_response) { question_response['links'] }
+          let(:mas) { %w[id name url created_at updated_at] }
+          let(:type) { link }
         end
       end
 
@@ -114,7 +126,6 @@ describe 'Questions API', type: :request do
           expect(Question.count).to eq 1
         end
       end
-
     end
   end
 end

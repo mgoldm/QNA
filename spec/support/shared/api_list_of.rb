@@ -1,4 +1,6 @@
-shared_examples_for 'API comments' do
+# frozen_string_literal: true
+
+shared_examples_for 'API list of' do
   it 'returns list of comments' do
     expect(parent_response.size).to eq 3
   end
