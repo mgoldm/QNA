@@ -14,8 +14,8 @@ describe 'Questions API', type: :request do
     end
 
     context 'authorized' do
-      let!(:access_token) { create(:access_token) }
       let!(:user_id) { access_token.resource_owner_id }
+      let(:access_token) { create(:access_token) }
       let!(:questions) { create_list(:question, 2, user_id: user_id) }
       let(:question) { questions.first }
       let(:question_response) { json['questions'].first }
@@ -82,7 +82,7 @@ describe 'Questions API', type: :request do
 
       describe ' Show' do
         before do
-          get "/api/v1/questions/#{question.id}", params: {access_token: access_token.token }, headers: headers
+          get "/api/v1/questions/#{question.id}", params: { access_token: access_token.token }, headers: headers
         end
         it 'show question' do
           expect(response).to be_successful
@@ -97,7 +97,7 @@ describe 'Questions API', type: :request do
 
       describe 'POST' do
         it 'create new question' do
-          post '/api/v1/questions', params: { question: attributes_for(:question), access_token: access_token.token }
+          post '/api/v1/questions', params: { question: attributes_for(:question, user_id: user_id), access_token: access_token.token }
           expect(Question.count).to eq 3
         end
 

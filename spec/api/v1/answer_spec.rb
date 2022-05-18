@@ -21,6 +21,7 @@ describe 'Answer API', type: :request do
     let(:answer) { answers.first }
     let!(:comments) { create_list(:comment, 3, commentable: answer) }
     let!(:links) { create_list(:link, 3, linkable: answer) }
+
     describe 'Post' do
       it 'should create new' do
         post "/api/v1/questions/#{question.id}/answers",

@@ -6,7 +6,7 @@ class Ability
   attr_reader :user
 
   def initialize(user)
-    @user = user
+    @user = user || current_resource_owner
 
     if user
       user.admin? ? admin_abilities : user_abilities

@@ -3,7 +3,7 @@
 module Api
   module V1
     class AnswersController < Api::V1::BaseController
-      load_and_authorize_resource
+      authorize_resource
 
       def create
         @question = Question.find(params[:question_id])
