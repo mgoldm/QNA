@@ -27,7 +27,7 @@ describe 'Answer API', type: :request do
         post "/api/v1/questions/#{question.id}/answers",
              params: { answer: attributes_for(:answer), access_token: access_token.token }
 
-        expect(Answer.count).to eq 1
+        expect(Answer.count).to eq 3
       end
 
       it 'ivalid create' do
