@@ -28,15 +28,18 @@ gem 'jbuilder', '~> 2.7'
 # gem 'image_processing', '~> 1.2'
 
 # Reduces boot times through caching; required in config/boot.rb
+gem 'active_model_serializers', '~> 0.10.0'
 gem 'aws-sdk-s3', '~> 1'
 gem 'bootsnap', '>= 1.4.2', require: false
 gem 'cancancan'
 gem 'cocoon'
 gem 'decent_exposure', '~> 3.0'
 gem 'devise'
+gem 'doorkeeper', '5.1.0'
 gem 'gist-embed-rails'
 gem 'gon'
 gem 'jquery-rails'
+gem 'oj'
 gem 'pundit'
 gem 'skim'
 gem 'slim-rails'
