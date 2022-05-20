@@ -16,7 +16,15 @@ class Question < ApplicationRecord
 
   validates :title, :body, presence: true
 
+  after_create :calculate_reputation
+
   def best_answer
     answers.where(best: true).to_a
+  end
+
+  private
+
+  def calculate_reputation
+    ReputationJob.perform_later(self)
   end
 end
