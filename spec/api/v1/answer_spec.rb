@@ -69,7 +69,7 @@ describe 'Answer API', type: :request do
       it_behaves_like 'API list of' do
         let(:json_response) { comment_response }
         let(:parent_response) { answer_response['comments'] }
-        let(:mas) { %w[id comment  user_id created_at updated_at] }
+        let(:mas) { %w[id comment user_id created_at updated_at] }
         let(:type) { comment }
       end
     end
