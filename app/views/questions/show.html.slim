@@ -13,7 +13,7 @@ p= @question.body
       = render 'shared/delete_link', link: link
 
 .question-comments*{ data: { question: { id: @question.id } } }
-  =render 'comments/comment', commentable: @question
+  = render 'comments/comment', commentable: @question
 
 .answers
   table
@@ -79,3 +79,11 @@ p= @question.body
           = link_to_add_association 'add link', f, :links, partial: 'shared/link_fields'
       .edit-question
         = f.submit 'Answer'
+
+- unless @question.subs.include?(current_user)
+  = form_with url: subscribers_path(question_id: @question.id), local: false do |f|
+    = f.submit 'Subscribe'
+
+- if @question.subs.include?(current_user)
+  = form_with url: subscriber_path(question_id: @question.id), method: :delete, local: false do |f|
+    = f.submit 'Unsubscribe'

@@ -1,7 +1,9 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 RSpec.describe DailyDigestJob, type: :job do
-  let(:service) {double('DailyDigestService')}
+  let(:service) { double('DailyDigestService') }
 
   before do
     allow(DailyDigestService).to recieve(:new).and_return(service)

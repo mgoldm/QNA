@@ -5,6 +5,8 @@ class Question < ApplicationRecord
 
   belongs_to :user
 
+  has_many :subscribers
+  has_many :subs, through: :subscribers, source: :user
   has_many :answers, dependent: :destroy
   has_many :links, dependent: :destroy, as: :linkable
   has_one :reward, dependent: :destroy
@@ -16,10 +18,14 @@ class Question < ApplicationRecord
 
   validates :title, :body, presence: true
 
-  after_create :calculate_reputation
+  after_create :send_notification
 
   def best_answer
     answers.where(best: true).to_a
+  end
+
+  def check_date
+    created_at.day == Time.now.day and created_at.month == Time.now.month and created_at.year == Time.now.year
   end
 
   private

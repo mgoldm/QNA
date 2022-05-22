@@ -41,10 +41,10 @@ gem 'gon'
 gem 'jquery-rails'
 gem 'oj'
 gem 'pundit'
-gem 'skim'
-gem 'slim-rails'
 gem 'sidekiq'
 gem 'sinatra', require: false
+gem 'skim'
+gem 'slim-rails'
 gem 'whenever', require: false
 
 group :development, :test do
