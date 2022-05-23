@@ -1,4 +1,5 @@
 class SubscribersController < ApplicationController
+  before_action :authenticate_user!
 
   def create
     @subscribe = current_user.subscribers.new(question_id: params[:question_id])

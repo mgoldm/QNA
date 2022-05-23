@@ -80,10 +80,11 @@ p= @question.body
       .edit-question
         = f.submit 'Answer'
 
-- unless @question.subs.include?(current_user)
-  = form_with url: subscribers_path(question_id: @question.id), local: false do |f|
-    = f.submit 'Subscribe'
+- if current_user.present?
+  - unless @question.subs.include?(current_user)
+    = form_with url: subscribers_path(question_id: @question.id), local: false do |f|
+      = f.submit 'Subscribe'
 
-- if @question.subs.include?(current_user)
-  = form_with url: subscriber_path(question_id: @question.id), method: :delete, local: false do |f|
-    = f.submit 'Unsubscribe'
+  - if @question.subs.include?(current_user)
+    = form_with url: subscriber_path(question_id: @question.id), method: :delete, local: false do |f|
+      = f.submit 'Unsubscribe'
