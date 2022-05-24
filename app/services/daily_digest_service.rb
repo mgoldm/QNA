@@ -2,11 +2,9 @@
 
 class DailyDigestService
   def send_digest
+    questions= Question.check_date
     User.find_each(batch_size: 500) do |user|
-      Question.find_each(batch_size: 500) do |question|
-        questions << question if question.check_date
-        DailyDigestMailer.digest(user, questions).deliver_later if questions.present?
-      end
+      DailyDigestMailer.digest(user, questions).deliver_later if questions.present?
     end
   end
 end

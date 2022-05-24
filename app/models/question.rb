@@ -18,14 +18,14 @@ class Question < ApplicationRecord
 
   validates :title, :body, presence: true
 
-  after_create :send_notification
+  after_create :calculate_reputation
+
+  def self.check_date
+    where(created_at: Time.zone.yesterday.beginning_of_day..Time.zone.yesterday.end_of_day)
+  end
 
   def best_answer
     answers.where(best: true).to_a
-  end
-
-  def check_date
-    created_at.day == Time.now.day and created_at.month == Time.now.month and created_at.year == Time.now.year
   end
 
   private

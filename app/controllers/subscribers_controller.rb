@@ -9,7 +9,7 @@ class SubscribersController < ApplicationController
   end
 
   def destroy
-    @subscribe = current_user.subscribers.find_by(question_id: params[:question_id])
+    @subscribe = current_user.subscriptions.find(params[:question_id])
     @subscribe.destroy
   end
 end
