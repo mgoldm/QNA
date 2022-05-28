@@ -1,6 +1,12 @@
 # frozen_string_literal: true
 
+require 'sidekiq/web'
+
 Rails.application.routes.draw do
+  authenticate :user, lambda { |user| user.admin? } do
+    mount Sidekiq::Web, at: '/sidekiq'
+  end
+
   use_doorkeeper
   devise_for :users
 
@@ -19,6 +25,7 @@ Rails.application.routes.draw do
   resources :rewards, only: :index, shallow: true
   resources :files, only: :destroy, shallow: true
   resources :links, only: :destroy, shallow: true
+  resources :subscribers, only: [:create, :destroy], shallow: true
 
   namespace :api do
     namespace :v1 do

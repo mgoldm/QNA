@@ -14,7 +14,7 @@ module Qna
     config.load_defaults 6.0
 
     config.active_storage.replace_on_assign_to_many = false
-
+    config.active_job.queue_adapter = :sidekiq
     config.action_cable.disable_request_forgery_protection = false
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration can go into files in config/initializers

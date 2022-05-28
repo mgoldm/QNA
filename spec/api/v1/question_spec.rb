@@ -97,13 +97,15 @@ describe 'Questions API', type: :request do
 
       describe 'POST' do
         it 'create new question' do
-          post '/api/v1/questions', params: { question: attributes_for(:question, user_id: user_id), access_token: access_token.token }
+          post '/api/v1/questions',
+               params: { question: attributes_for(:question, user_id: user_id), access_token: access_token.token }
           expect(Question.count).to eq 3
         end
 
         it 'invalid values ' do
           post '/api/v1/questions',
-               params: { question: attributes_for(:question, title: '', user_id: user_id), access_token: access_token.token }
+               params: { question: attributes_for(:question, title: '', user_id: user_id),
+                         access_token: access_token.token }
           expect(response).to have_http_status(:unprocessable_entity)
         end
       end
